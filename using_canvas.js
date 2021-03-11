@@ -15,17 +15,27 @@ function distance(x,y,xx,yy){
     )
 }
 
+var mouse_is_down = false;
 var mouse_x,mouse_y
 const run_limit = 300;
-function mouse_was_moved(event){
+function mouse_has_moved(event){
     mouse_x = event.x;
     mouse_y = event.y;
+
+}
+function mouse_pressed_down(){
+    mouse_is_down=true;
     
 
 
 }
+function mouse_is_up(){
+    mouse_is_down=false;
+}
+window.addEventListener("mousemove",mouse_has_moved)
+window.addEventListener("mousedown",mouse_pressed_down);
+window.addEventListener("mouseup",mouse_is_up)
 
-window.addEventListener("mousemove",mouse_was_moved)
 //Setting a variable for the canvas 2d context object:
 
 var c = canvas.getContext("2d");
@@ -92,20 +102,24 @@ function animate(){
         cur = circles[i];
         cur.draw();
         //updating depending on mouse:
-        let original = distance(cur.x,cur.y,mouse_x,mouse_y);
+        if (mouse_is_down){
+            let original = distance(cur.x,cur.y,mouse_x,mouse_y);
 
-        console.log(cur.x,cur.y);
-        if (original<=run_limit){
-            let x_mod = distance(cur.x+cur.vx,cur.y,mouse_x,mouse_y);
-            let y_mod = distance(cur.x,cur.y+cur.vy,mouse_x,mouse_y);
-            if (x_mod<original){
-                cur.vx*=-1;
-            }
-            if(y_mod<original){
+            console.log(cur.x,cur.y);
+            if (original<=run_limit){
+                let x_mod = distance(cur.x+cur.vx,cur.y,mouse_x,mouse_y);
+                let y_mod = distance(cur.x,cur.y+cur.vy,mouse_x,mouse_y);
+                if (x_mod<original){
+                    cur.vx*=-1;
+                }
+                if(y_mod<original){
 
-                cur.vy*=-1;
+                    cur.vy*=-1;
+                }
             }
         }
+
+
 
         //updating depending on collision and screen:
         
