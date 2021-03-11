@@ -7,6 +7,40 @@ var canvas = document.querySelector("canvas") //selecting the canvas from the ht
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+function distance(x,y,xx,yy){
+    
+
+    return (
+        Math.sqrt(((x-xx)**2) + ((y-yy)**2) )
+    )
+}
+
+const run_limit = 300;
+function mouse_was_moved(event){
+    let mouse_x = event.x;
+    let mouse_y = event.y;
+    
+    //loop throught the balls and check if they are close enough:
+    for (i=0; i<circles.length; i++){
+        cur = circles[i];
+        let original = distance(cur.x,cur.y,mouse_x,mouse_y);
+
+        console.log(cur.x,cur.y);
+        if (original<=run_limit){
+            let x_mod = distance(cur.x+cur.vx,cur.y,mouse_x,mouse_y);
+            let y_mod = distance(cur.x,cur.y+cur.vy,mouse_x,mouse_y);
+            if (x_mod<original){
+                cur.vx*=-1;
+            }
+            if(y_mod<original){
+
+                cur.vy*=-1;
+            }
+        }
+
+    }
+
+}
 
 window.addEventListener("mousemove",mouse_was_moved)
 //Setting a variable for the canvas 2d context object:
@@ -48,8 +82,8 @@ class ball{
     }
 }
 
-var circ_num = 50;
-var velinterval = 20;
+var circ_num = 100;
+var velinterval = 10;
 var circles = [];
 
 //Generating circle coordinates and velocities::
@@ -58,17 +92,13 @@ for (i = 0; i<circ_num; i++){
     let yc= Math.random()*window.innerHeight;
     let vxc = velinterval*(Math.random()-0.5);
     let vyc = velinterval*(Math.random()-0.5);
-    let radius = Math.random()*5;
+    let radius = Math.random()*5+5;
     let cur_ob = new ball(xc,yc,radius,vxc,vyc);
     circles.push(
         cur_ob
     );
 }
 
-function mouse_was_moved(event){
-    let mouse_x = event.x;
-    let mouse_y = event.y;
-}
 
 function animate(){
     requestAnimationFrame(animate);
