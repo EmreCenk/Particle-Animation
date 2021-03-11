@@ -12,39 +12,54 @@ canvas.height = window.innerHeight;
 
 var c = canvas.getContext("2d");
 
-var x,y,w,h;
+var coordinates = [];
+var velocities = [];
+var radii = [];
+var circ_num = 10;
+var velinterval = 10;
 
-x=100;
-y=100;
-w=50;
-h=50;
-
-//rectangles:
-c.fillStyle = "green";
-c.fillRect(x,y,w,h);
-
-c.fillStyle = "rgba(255,0,0,0.7";
-c.fillRect(111,222,333,444);
-
-
-//lines:
-c.fillStyle = "rgba(10,0,0)";
-c.moveTo(200,200);
-c.lineTo(200,300);
-c.lineTo(300,200);
-c.lineTo(234,532);
-c.fill();
-
-
-//DRAWING AUDI LOGO:
-c.lineWidth=8;
-for (i=0; i<4; i++){
-    c.beginPath(); //resetting path so that the line and the circle are not connected
-    // Arcs and circles:
-    c.strokeStyle="black";
-    c.arc(100+i*65,100,50,0,Math.PI*2);
-    c.stroke();
-    // c.stroke();
-
+//Generating circle coordinates and velocities::
+for (i = 0; i<circ_num; i++){
+    coordinates.push([Math.random()*window.innerWidth,Math.random()*window.innerHeight]);
+    velocities.push([velinterval*(Math.random()-0.5),velinterval*(Math.random()-0.5)]);
+    radii.push(15);
+    //Math.random()*20+10
 }
 
+function animate(){
+    requestAnimationFrame(animate);
+    c.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+    for (i=0; i<circ_num; i++){
+        //getting variables:
+        let x = coordinates[i][0];
+        let y = coordinates[i][1];
+        let vx = velocities[i][0];
+        let vy = velocities[i][1];    
+        let radius = radii[i];
+        c.beginPath();
+        c.arc(x,y,radius,0,Math.PI*2);
+        c.fill()
+
+        if (x+radius>window.innerWidth || x-radius<0){
+            velocities[i][0]*=-1;
+            coordinates[i][0]-=2*vx; // to make sure it gets out of the way
+            //(sometimes the ball can get stuck and in an infinite loop when it doesn't have enough velocity)
+        }
+        
+        if (y-radius<0 || y+radius>window.innerHeight){
+            velocities[i][1]*=-1;
+            coordinates[i][1]-=2*vy;
+        }
+        //updating coordinates:
+        coordinates[i][0]+=vx;
+        coordinates[i][1]+=vy;
+        
+        
+
+
+    }
+
+
+}
+animate()
