@@ -15,8 +15,8 @@ var c = canvas.getContext("2d");
 var coordinates = [];
 var velocities = [];
 var radii = [];
-var circ_num = 10;
-var velinterval = 10;
+var circ_num = 80;
+var velinterval = 20;
 
 //Generating circle coordinates and velocities::
 for (i = 0; i<circ_num; i++){
@@ -40,18 +40,27 @@ function animate(){
         c.beginPath();
         c.arc(x,y,radius,0,Math.PI*2);
         c.fill()
-
-        if (x+radius>window.innerWidth || x-radius<0){
+        console.log(vx,vy);
+        
+        if (x-radius<0 && vx<0){
             velocities[i][0]*=-1;
-            coordinates[i][0]-=2*vx; // to make sure it gets out of the way
-            //(sometimes the ball can get stuck and in an infinite loop when it doesn't have enough velocity)
+            let vx = velocities[i][0];
+
         }
-        
-        if (y-radius<0 || y+radius>window.innerHeight){
+        if (x+radius>window.innerWidth && vx>0){
+            velocities[i][0]*=-1;
+            let vx = velocities[i][0];
+   
+        }
+        if (y-radius<0 && vy<0){
             velocities[i][1]*=-1;
-            coordinates[i][1]-=2*vy;
+            let vy = velocities[i][1];  
         }
-        
+        else if (y+radius>window.innerHeight && vy>0){
+            velocities[i][1]*=-1;
+            let vy = velocities[i][1];  
+        }
+
         //updating coordinates:
         coordinates[i][0]+=vx;
         coordinates[i][1]+=vy;
