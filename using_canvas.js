@@ -90,9 +90,7 @@ function animate(){
     for (i=0; i<circ_num; i++){
         //getting variables:
         cur = circles[i];
-        c.beginPath();
-        c.arc(cur.x,cur.y,cur.radius,0,Math.PI*2);
-        c.fill()
+        cur.draw();
         //updating depending on mouse:
         let original = distance(cur.x,cur.y,mouse_x,mouse_y);
 
