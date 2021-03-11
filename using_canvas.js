@@ -8,22 +8,66 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 
+window.addEventListener("mousemove",mouse_was_moved)
 //Setting a variable for the canvas 2d context object:
 
 var c = canvas.getContext("2d");
 
-var coordinates = [];
-var velocities = [];
-var radii = [];
-var circ_num = 100;
+
+class ball{
+    constructor(x,y,radius, vx, vy, color="black"){
+        this.x=x;
+        this.y=y;
+        this.radius = radius;
+        this.vx=vx;
+        this.vy = vy;
+        this.color=color;
+    }
+    update_position(){
+        if (this.x-this.radius<0 && this.vx<0){
+            this.vx*=-1;
+
+        }
+        if (this.x+this.radius>window.innerWidth && this.vx>0){
+            this.vx*=-1;
+   
+        }
+        if (this.y-this.radius<0 && this.vy<0){
+            this.vy*=-1;
+        }
+        else if (this.y+this.radius>window.innerHeight && this.vy>0){
+            this.vy*=-1;
+        }
+    }
+    draw(){
+        c.beginPath();
+        c.arc(this.x,this.y,this.radius,0,Math.PI*2);
+        c.fillStyle = this.color;
+        c.fill();
+
+    }
+}
+
+var circ_num = 50;
 var velinterval = 20;
+var circles = [];
 
 //Generating circle coordinates and velocities::
 for (i = 0; i<circ_num; i++){
-    coordinates.push([Math.random()*window.innerWidth,Math.random()*window.innerHeight]);
-    velocities.push([velinterval*(Math.random()-0.5),velinterval*(Math.random()-0.5)]);
-    radii.push(Math.random()*5);
-    //Math.random()*20+10
+    let xc = Math.random()*window.innerWidth;
+    let yc= Math.random()*window.innerHeight;
+    let vxc = velinterval*(Math.random()-0.5);
+    let vyc = velinterval*(Math.random()-0.5);
+    let radius = Math.random()*5;
+    let cur_ob = new ball(xc,yc,radius,vxc,vyc);
+    circles.push(
+        cur_ob
+    );
+}
+
+function mouse_was_moved(event){
+    let mouse_x = event.x;
+    let mouse_y = event.y;
 }
 
 function animate(){
@@ -32,38 +76,31 @@ function animate(){
 
     for (i=0; i<circ_num; i++){
         //getting variables:
-        let x = coordinates[i][0];
-        let y = coordinates[i][1];
-        let vx = velocities[i][0];
-        let vy = velocities[i][1];    
-        let radius = radii[i];
+        cur = circles[i];
         c.beginPath();
-        c.arc(x,y,radius,0,Math.PI*2);
+        c.arc(cur.x,cur.y,cur.radius,0,Math.PI*2);
         c.fill()
-        console.log(vx,vy);
+
         
-        if (x-radius<0 && vx<0){
-            velocities[i][0]*=-1;
-            let vx = velocities[i][0];
+        if (cur.x-cur.radius<0 && cur.vx<0){
+            cur.vx*=-1;
 
         }
-        if (x+radius>window.innerWidth && vx>0){
-            velocities[i][0]*=-1;
-            let vx = velocities[i][0];
-   
+        if (cur.x+cur.radius>window.innerWidth && cur.vx>0){
+            cur.vx*=-1;   
         }
-        if (y-radius<0 && vy<0){
-            velocities[i][1]*=-1;
-            let vy = velocities[i][1];  
+
+        if (cur.y-cur.radius<0 && cur.vy<0){
+            cur.vy*=-1;
         }
-        else if (y+radius>window.innerHeight && vy>0){
-            velocities[i][1]*=-1;
-            let vy = velocities[i][1];  
+        else if (cur.y+cur.radius>window.innerHeight && cur.vy>0){
+            cur.vy*=-1;
+
         }
 
         //updating coordinates:
-        coordinates[i][0]+=vx;
-        coordinates[i][1]+=vy;
+        cur.x+=cur.vx;
+        cur.y+=cur.vy;
         
         
 
