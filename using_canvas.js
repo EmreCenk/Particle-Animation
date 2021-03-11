@@ -35,14 +35,16 @@ c.lineTo(300,200);
 c.lineTo(234,532);
 c.fill();
 
-c.beginPath(); //resetting path so that the line and the circle are not connected
 
+//DRAWING AUDI LOGO:
+c.lineWidth=8;
+for (i=0; i<4; i++){
+    c.beginPath(); //resetting path so that the line and the circle are not connected
+    // Arcs and circles:
+    c.strokeStyle="black";
+    c.arc(100+i*65,100,50,0,Math.PI*2);
+    c.stroke();
+    // c.stroke();
 
-// Arcs and circles:
-c.fillStyle="black";
-c.arc(100,100,10,0,Math.PI*2);
-c.fill();
-// c.stroke();
-
-
+}
 
