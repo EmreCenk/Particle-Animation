@@ -15,30 +15,13 @@ function distance(x,y,xx,yy){
     )
 }
 
+var mouse_x,mouse_y
 const run_limit = 300;
 function mouse_was_moved(event){
-    let mouse_x = event.x;
-    let mouse_y = event.y;
+    mouse_x = event.x;
+    mouse_y = event.y;
     
-    //loop throught the balls and check if they are close enough:
-    for (i=0; i<circles.length; i++){
-        cur = circles[i];
-        let original = distance(cur.x,cur.y,mouse_x,mouse_y);
 
-        console.log(cur.x,cur.y);
-        if (original<=run_limit){
-            let x_mod = distance(cur.x+cur.vx,cur.y,mouse_x,mouse_y);
-            let y_mod = distance(cur.x,cur.y+cur.vy,mouse_x,mouse_y);
-            if (x_mod<original){
-                cur.vx*=-1;
-            }
-            if(y_mod<original){
-
-                cur.vy*=-1;
-            }
-        }
-
-    }
 
 }
 
@@ -110,9 +93,25 @@ function animate(){
         c.beginPath();
         c.arc(cur.x,cur.y,cur.radius,0,Math.PI*2);
         c.fill()
+        //updating depending on mouse:
+        let original = distance(cur.x,cur.y,mouse_x,mouse_y);
 
+        console.log(cur.x,cur.y);
+        if (original<=run_limit){
+            let x_mod = distance(cur.x+cur.vx,cur.y,mouse_x,mouse_y);
+            let y_mod = distance(cur.x,cur.y+cur.vy,mouse_x,mouse_y);
+            if (x_mod<original){
+                cur.vx*=-1;
+            }
+            if(y_mod<original){
+
+                cur.vy*=-1;
+            }
+        }
+
+        //updating depending on collision and screen:
         
-        if (cur.x-cur.radius<0 && cur.vx<0){
+        if (cur.x-cur.radius<0){
             cur.vx*=-1;
 
         }
@@ -127,6 +126,8 @@ function animate(){
             cur.vy*=-1;
 
         }
+
+
 
         //updating coordinates:
         cur.x+=cur.vx;
