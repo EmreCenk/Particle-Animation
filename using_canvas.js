@@ -51,6 +51,7 @@ function animate(){
             velocities[i][1]*=-1;
             coordinates[i][1]-=2*vy;
         }
+        
         //updating coordinates:
         coordinates[i][0]+=vx;
         coordinates[i][1]+=vy;
