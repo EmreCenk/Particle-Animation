@@ -15,14 +15,14 @@ var c = canvas.getContext("2d");
 var coordinates = [];
 var velocities = [];
 var radii = [];
-var circ_num = 80;
+var circ_num = 100;
 var velinterval = 20;
 
 //Generating circle coordinates and velocities::
 for (i = 0; i<circ_num; i++){
     coordinates.push([Math.random()*window.innerWidth,Math.random()*window.innerHeight]);
     velocities.push([velinterval*(Math.random()-0.5),velinterval*(Math.random()-0.5)]);
-    radii.push(15);
+    radii.push(Math.random()*5);
     //Math.random()*20+10
 }
 
